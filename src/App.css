@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.form-input {
+	@apply w-full placeholder:text-gray-500  rounded placeholder-gray-700 shadow focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400;
+}
+
+.remove-scroll-bar {
+	scroll-behavior: smooth;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+.remove-scroll-bar::-webkit-scrollbar {
+	display: none;
+}
+body {
+	scroll-behavior: smooth;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+body::-webkit-scrollbar {
+	display: none;
+}
+.form-error {
+	@apply bottom-2 right-1 absolute text-red-400 text-sm pointer-events-none;
+}
