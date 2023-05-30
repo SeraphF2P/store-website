@@ -3,25 +3,39 @@
 @tailwind utilities;
 
 .form-input {
-	@apply w-full placeholder:text-gray-500  rounded placeholder-gray-700 shadow focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400;
+  @apply w-full rounded  placeholder-gray-700 shadow placeholder:text-gray-500 focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400;
+}
+.card-face {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transform: rotateY(0deg) !important;
+  transition: transform 1s ease;
+}
+.card-back {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transform: rotateY(180deg) !important;
+  transition: transform 1s ease;
 }
 
 .remove-scroll-bar {
-	scroll-behavior: smooth;
-	-ms-overflow-style: none;
-	scrollbar-width: none;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 .remove-scroll-bar::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 body {
-	scroll-behavior: smooth;
-	-ms-overflow-style: none;
-	scrollbar-width: none;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 body::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 .form-error {
-	@apply bottom-2 right-1 absolute text-red-400 text-sm pointer-events-none;
+  @apply pointer-events-none absolute bottom-2 right-1 text-sm text-red-400;
 }
