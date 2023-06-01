@@ -1,15 +1,14 @@
 import { AnimatePresence, motion as m } from "framer-motion";
 import { useEffect, useState } from "react";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import Btn from "../components/Btn";
 import ProductThemesGallery from "../components/ProductThemesGallery";
-import axiosClient from "../lib/axiosClient";
-import { fadeUp } from "../lib/utile/animate";
-import { formatCurrency } from "../lib/utile/formatters";
 import { host } from "../host";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
+import axiosClient from "../lib/axiosClient";
+import { fadeUp, slideIn } from "../lib/utile/animate";
+import { formatCurrency } from "../lib/utile/formatters";
 const ProductInfoPage = () => {
   const nav = useNavigate();
   useEffect(() => {
@@ -20,6 +19,8 @@ const ProductInfoPage = () => {
   const { id, theme_id } = useParams();
   const { data: product } = useQuery({
     queryKey: ["products", id],
+    keepPreviousData: true,
+    enabled: id != undefined,
     queryFn: () => {
       return axiosClient(`/products/${id}`);
     },
@@ -44,7 +45,7 @@ const ProductInfoPage = () => {
         className={`flex     h-screen  w-screen items-center justify-center bg-opacity-20`}
       >
         <m.div
-          variants={fadeUp}
+          variants={slideIn}
           initial="hidden"
           animate="show"
           className={` relative  mx-4 flex  h-[540px] w-full max-w-screen-sm   overflow-hidden rounded-md   bg-slate-50/90   shadow-lg sm:mx-0 `}
@@ -57,20 +58,21 @@ const ProductInfoPage = () => {
               <ProductThemesGallery
                 themes={product?.data.themes}
                 activeTheme={activeTheme}
+                key={activeTheme.image + "main"}
                 setactiveTheme={setactiveTheme}
               />
             )}
           </m.section>
           <div className="relative flex h-full w-full  flex-col gap-2 sm:w-[calc(100%-160px)]  sm:justify-center   sm:shadow   ">
             <div className=" relative h-60 w-full overflow-hidden   ">
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence initial={false} mode="popLayout">
                 {activeTheme && (
                   <m.div
                     initial={{ translateX: "-100%" }}
                     animate={{ translateX: "0%" }}
                     exit={{ translateX: "100%" }}
                     transition={{ duration: 1, ease: "linear" }}
-                    key={activeTheme.image}
+                    key={activeTheme.image + "slide"}
                     layout="position"
                     className="relative h-60 w-full   "
                   >

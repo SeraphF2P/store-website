@@ -1,14 +1,13 @@
 import { FC } from "react";
-import { useNavigate } from "react-router-dom";
-import { useProducts } from "../../../context/ProductsContext";
-import { host } from "../../../host";
-import { Btn } from "../../../components";
-import { formatCurrency } from "../../../lib/utile/formatters";
 import { BsTrash } from "react-icons/bs";
-
+import { useNavigate } from "react-router-dom";
+import { Btn } from "../../../components";
+import { useProductsContext } from "../../../context/ProductsContext";
+import { host } from "../../../host";
+import { formatCurrency } from "../../../lib/utile/formatters";
 const InCartItem: FC<CartItemType> = (product) => {
   const nav = useNavigate();
-  const { addQty, removeQty, removeFromCart } = useProducts();
+  const { addQty, removeQty, removeFromCart } = useProductsContext();
   return (
     <div
       onClick={() => {

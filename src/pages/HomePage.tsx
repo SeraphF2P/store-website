@@ -1,10 +1,11 @@
+
 import Categorys from "../components/Categorys.tsx";
 import ProductCard from "../components/ProductCard.tsx";
-import { useProducts } from "../context/ProductsContext.tsx";
+import { useProductsContext } from "../context/ProductsContext.tsx";
 import useScrollSensore from "../hook/useScrollSensore.ts";
 import { AnimatePresence, motion as m } from "framer-motion";
 const HomePage = () => {
-  const { products } = useProducts();
+  const { products } = useProductsContext();
   const categorysBar = useScrollSensore({
     forward: ["-translate-y-[calc(100%+80px)]"],
     inReverse: ["translate-y-0"],
@@ -35,7 +36,20 @@ const HomePage = () => {
         <AnimatePresence>
           {products &&
             products.map((product: ProductType) => {
-              return <ProductCard key={product.id} {...product} />;
+              return (
+                <m.div
+                  layout
+                  key={product.created_at + "homepagecard"}
+                  layoutId={product.created_at + product.id + "homepagecard"}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5 }}
+                  whileHover={{ y: -8, transition: { ease: "linear" } }}
+                >
+                  <ProductCard {...product} />
+                </m.div>
+              );
             })}
         </AnimatePresence>
       </m.section>

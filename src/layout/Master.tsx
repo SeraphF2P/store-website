@@ -1,23 +1,15 @@
-import { FC, useEffect } from "react";
+import { Outlet, useOutlet, useOutletContext } from "react-router-dom";
 import MainNav from "../components/MainNav";
-import { Outlet, useNavigate } from "react-router-dom";
-import ProductsContext from "../context/ProductsContext";
 
-const Master: FC = () => {
-	// const nav = useNavigate();
-	// useEffect(() => {
-	// 	if (localStorage.getItem("token") == undefined) {
-	// 		nav("/access-denied");
-	// 	}
-	// }, [nav]);
-	return (
-		<ProductsContext>
-			<MainNav />
-			
-			<Outlet />
-			<footer />
-		</ProductsContext>
-	);
+const Master = () => {
+  const val = useOutletContext();
+  return (
+    <>
+      <MainNav />
+      <Outlet key="master.layout" context={val} />
+      <footer />
+    </>
+  );
 };
 
 export default Master;

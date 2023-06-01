@@ -1,13 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { FC, ReactNode, createContext, useContext, useState } from "react";
+import { FC, createContext, useContext, useState } from "react";
 import { useQuery } from "react-query";
+import { Outlet, useOutletContext } from "react-router-dom";
 import { useLocalStorage } from "../hook/useStorage";
 import axiosClient from "../lib/axiosClient";
 import { formatCurrency } from "./../lib/utile/formatters";
 
-const Context = createContext({
+const defaultValues = {
   toggleCartItem: (_product: SingleProductType) => {},
   removeFromCart: (
     _product: CartItemType & {
@@ -23,13 +24,12 @@ const Context = createContext({
   products: [],
   totalPrice: "",
   inCart: [],
-});
-
-export function useProducts() {
-  return useContext(Context);
+};
+export function useProductsContext() {
+  return useOutletContext<typeof defaultValues>();
 }
 
-const ProductsContext: FC<{ children: ReactNode }> = (props) => {
+const ProductsContext: FC = () => {
   const [category, setCategory] = useState("");
   const { data: products, isLoading } = useQuery({
     queryKey: ["products", category],
@@ -37,6 +37,7 @@ const ProductsContext: FC<{ children: ReactNode }> = (props) => {
       return axiosClient(`/products?category=${category}`);
     },
     staleTime: 1000 * 60,
+    keepPreviousData: true,
     select: (data) => {
       return data.data;
     },
@@ -96,8 +97,8 @@ const ProductsContext: FC<{ children: ReactNode }> = (props) => {
   };
 
   return (
-    <Context.Provider
-      value={{
+    <Outlet
+      context={{
         products,
         toggleCartItem,
         inCart,
@@ -110,9 +111,7 @@ const ProductsContext: FC<{ children: ReactNode }> = (props) => {
         setCategory,
         activeCategory: category,
       }}
-    >
-      {props.children}
-    </Context.Provider>
+    />
   );
 };
 

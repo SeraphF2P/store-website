@@ -1,39 +1,30 @@
 import { FC, useRef, useState } from "react";
 import { RiAddLine } from "react-icons/ri";
 import ToggleBtn from "../components/ToggleBtn";
-
+import { Portal } from "@radix-ui/react-portal";
 import { useNavigate } from "react-router-dom";
 
-import { motion as m } from "framer-motion";
+import { BiArrowBack } from "react-icons/bi";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { useProducts } from "../context/ProductsContext";
+import { Btn } from ".";
+import { useProductsContext } from "../context/ProductsContext";
 import { host } from "../host";
 import { formatCurrency } from "../lib/utile/formatters";
-import ProductRating from "./ProductRating";
-import { Btn } from ".";
 import { randomNumBetween } from "../lib/utile/other";
-import MoreInfo from "./MoreInfo";
-import { BiArrowBack } from "react-icons/bi";
+import ProductRating from "./ProductRating";
 const ProductCard: FC<ProductType> = (product) => {
   const nav = useNavigate();
-  const { toggleCartItem, inCart } = useProducts();
+  const { toggleCartItem, inCart } = useProductsContext();
   const { current: activeTheme } = useRef(
     product.themes.length == 1
       ? product.themes[0]
-      : product.themes[randomNumBetween(0, product.themes.length)]
+      : product.themes[randomNumBetween(0, product.themes.length - 1)]
   );
   const [isInfoOpen, setisInfoOpen] = useState(false);
   return (
-    <m.div
-      layout
-      key={activeTheme.image}
-      initial={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      whileHover={{ y: -8, transition: { ease: "linear" } }}
-      className={`  relative h-[356px]  w-64   overflow-hidden  rounded-lg bg-slate-50  shadow-sm transition-shadow   hover:shadow-md `}
+    <div
+      className={`  relative h-[356px]  w-64   overflow-hidden  rounded-lg bg-slate-50  shadow transition-shadow   hover:shadow-md `}
     >
       <div className={`${!isInfoOpen ? "card-face" : "card-back"} `}>
         <LazyLoadImage
@@ -133,7 +124,7 @@ const ProductCard: FC<ProductType> = (product) => {
           </section>
         </div>
       </div>
-    </m.div>
+    </div>
   );
 };
 export default ProductCard;
