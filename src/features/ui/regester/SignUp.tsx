@@ -5,11 +5,13 @@ import { toast } from "../../../lib/myToast";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { FaFemale, FaMale } from "react-icons/fa";
 import { Btn } from "../../../components";
+import { useNavigate } from "react-router-dom";
 interface SignUpProps {
   setIsNewUser: (_val: boolean) => void;
 }
 
 const SignUp: FC<SignUpProps> = ({ setIsNewUser }) => {
+  const nav = useNavigate();
   const SignUpSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, "Write Your Full Name")
@@ -34,8 +36,8 @@ const SignUp: FC<SignUpProps> = ({ setIsNewUser }) => {
       .post(`/signup`, values)
       .then((res) => {
         if (res.status === 200 && res.data.success == 1) {
-          setIsNewUser(true);
-
+          setIsNewUser(false);
+          nav("/homepage");
           toast({ type: "success", message: res.data.msg });
         } else {
           toast({ type: "warn", message: res.data.msg });
@@ -43,7 +45,7 @@ const SignUp: FC<SignUpProps> = ({ setIsNewUser }) => {
       })
       .catch((err) => {
         console.error(err);
-        toast({ type: err, message: err.response.data.message });
+        toast({ type: "error", message: err.response.data.msg });
       })
       .finally(() => {
         setSubmitting(false);
@@ -69,7 +71,7 @@ const SignUp: FC<SignUpProps> = ({ setIsNewUser }) => {
           <Form className="flex flex-col items-center justify-center ">
             <div className="relative h-12  ">
               <Field
-                className=" relative w-full rounded placeholder-gray-700 shadow focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400"
+                className=" form-input"
                 autoComplete="true"
                 name="name"
                 type="text"
@@ -84,7 +86,7 @@ const SignUp: FC<SignUpProps> = ({ setIsNewUser }) => {
 
             <div className=" relative h-12 ">
               <Field
-                className=" w-full rounded  placeholder-gray-700 shadow focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400"
+                className=" form-input"
                 autoComplete="true"
                 name="email"
                 type="email"
@@ -98,7 +100,7 @@ const SignUp: FC<SignUpProps> = ({ setIsNewUser }) => {
             </div>
             <div className=" relative h-12">
               <Field
-                className=" rounded placeholder-gray-700 shadow focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400"
+                className=" form-input"
                 autoComplete="true"
                 name="password"
                 type="password"
@@ -112,7 +114,7 @@ const SignUp: FC<SignUpProps> = ({ setIsNewUser }) => {
             </div>
             <div className=" relative  h-12">
               <Field
-                className=" relative  rounded placeholder-gray-700 shadow focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400"
+                className=" form-input"
                 autoComplete="true"
                 name="password_confirmation"
                 type="password"
@@ -166,7 +168,7 @@ const SignUp: FC<SignUpProps> = ({ setIsNewUser }) => {
             </div>
             <div className=" relative h-12">
               <Field
-                className="  rounded placeholder-gray-700 shadow focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400"
+                className=" form-input"
                 name="phone"
                 type="text"
                 placeholder="Phone"
@@ -179,7 +181,7 @@ const SignUp: FC<SignUpProps> = ({ setIsNewUser }) => {
             </div>
             <div className=" relative h-12">
               <Field
-                className=" rounded placeholder-gray-700 shadow focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400"
+                className=" form-input"
                 autoComplete="true"
                 name="address"
                 type="text"

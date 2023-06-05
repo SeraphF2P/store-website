@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axiosClient from "../../../lib/axiosClient";
 import { toast } from "../../../lib/myToast";
-import { Field, Formik, Form } from "formik";
+import { Field, Formik, Form, ErrorMessage } from "formik";
 import { Btn } from "../../../components";
 interface LoginProps {
   setIsNewUser: (_val: boolean) => void;
@@ -35,7 +35,8 @@ const Login: FC<LoginProps> = ({ setIsNewUser }) => {
         }
       })
       .catch((err) => {
-        toast({ type: "error", message: err.response.data.message });
+        console.error(err);
+        toast({ type: "error", message: err.response.data.msg });
       })
       .finally(() => {
         setSubmitting(false);
@@ -44,7 +45,7 @@ const Login: FC<LoginProps> = ({ setIsNewUser }) => {
 
   return (
     <>
-      <h2 className=" capitalize">login</h2>
+      <h2 className=" text-3xl  capitalize">login</h2>
       <Formik
         initialValues={{
           email: "",
@@ -55,24 +56,35 @@ const Login: FC<LoginProps> = ({ setIsNewUser }) => {
       >
         {({ isSubmitting }) => (
           <Form className="flex  flex-col gap-4 p-2">
-            <div>
+            <div className=" relative">
               <Field
                 type="email"
                 name="email"
-                className=" rounded placeholder-gray-700 shadow focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400"
+                className="form-input"
                 placeholder="email"
                 autoComplete="true"
               />
+              <ErrorMessage
+                component="div"
+                className=" form-error"
+                name="email"
+              />
             </div>
-            <div>
+            <div className=" relative">
               <Field
                 type="password"
                 name="password"
-                className=" rounded placeholder-gray-700 shadow focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400"
+                className="form-input"
                 placeholder="password"
                 autoComplete="true"
               />
+              <ErrorMessage
+                component="div"
+                className=" form-error"
+                name="password"
+              />
             </div>
+
             <Btn
               type="button"
               className="p-2"

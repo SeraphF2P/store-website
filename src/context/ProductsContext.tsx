@@ -1,14 +1,32 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { FC, createContext, useContext, useState } from "react";
+import { FC, useState } from "react";
 import { useQuery } from "react-query";
 import { Outlet, useOutletContext } from "react-router-dom";
-import { useLocalStorage } from "../hook/useStorage";
+import { useLocalStorage } from "../hooks/useStorage";
 import axiosClient from "../lib/axiosClient";
 import { formatCurrency } from "./../lib/utile/formatters";
-
-const defaultValues = {
+type ProductsContextType = {
+  toggleCartItem: (_product: SingleProductType) => void;
+  removeFromCart: (
+    _product: CartItemType & {
+      qty: number;
+    }
+  ) => void;
+  addQty: (_id: string | number, _theme_id: string | number) => void;
+  removeQty: (_id: string | number, _theme_id: string | number) => void;
+  clearCart: () => void;
+  openProductInfoModal: (_val: ProductType | undefined) => void;
+  setCategory: (_val: string) => void;
+  activeCategory: string | undefined;
+  isLoading: boolean;
+  products: ProductType[];
+  totalPrice: string;
+  inCart: CartItemType[];
+  productInfo: ProductType | undefined;
+};
+const defaultValues: ProductsContextType = {
   toggleCartItem: (_product: SingleProductType) => {},
   removeFromCart: (
     _product: CartItemType & {
@@ -18,12 +36,14 @@ const defaultValues = {
   addQty: (_id: string | number, _theme_id: string | number) => {},
   removeQty: (_id: string | number, _theme_id: string | number) => {},
   clearCart: () => {},
+  setProductInfo: (_val) => {},
   setCategory: (_val: string) => {},
   activeCategory: "",
   isLoading: true,
   products: [],
   totalPrice: "",
   inCart: [],
+  productInfo: undefined,
 };
 export function useProductsContext() {
   return useOutletContext<typeof defaultValues>();
@@ -42,9 +62,7 @@ const ProductsContext: FC = () => {
       return data.data;
     },
   });
-
   const [inCart, setInCart] = useLocalStorage<CartItemType[]>("cart", []);
-
   const removeFromCart = (product: CartItemType) => {
     const index = inCart.findIndex(
       (item: { id: string | number; theme_id: string | number }) => {
@@ -95,7 +113,15 @@ const ProductsContext: FC = () => {
   const clearCart = () => {
     setInCart([]);
   };
+  const [productInfo, setProductInfo] = useState<ProductType | undefined>();
 
+  const openProductInfoModal = (val: ProductType | undefined) => {
+    if (productInfo) {
+      setProductInfo(undefined);
+    } else {
+      setProductInfo(val);
+    }
+  };
   return (
     <Outlet
       context={{
@@ -110,6 +136,8 @@ const ProductsContext: FC = () => {
         isLoading,
         setCategory,
         activeCategory: category,
+        productInfo,
+        openProductInfoModal,
       }}
     />
   );

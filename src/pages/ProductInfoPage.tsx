@@ -7,7 +7,7 @@ import Btn from "../components/Btn";
 import ProductThemesGallery from "../components/ProductThemesGallery";
 import { host } from "../host";
 import axiosClient from "../lib/axiosClient";
-import { fadeUp, slideIn } from "../lib/utile/animate";
+import { slideIn } from "../lib/utile/animate";
 import { formatCurrency } from "../lib/utile/formatters";
 const ProductInfoPage = () => {
   const nav = useNavigate();
@@ -64,26 +64,30 @@ const ProductInfoPage = () => {
             )}
           </m.section>
           <div className="relative flex h-full w-full  flex-col gap-2 sm:w-[calc(100%-160px)]  sm:justify-center   sm:shadow   ">
-            <div className=" relative h-60 w-full overflow-hidden   ">
-              <AnimatePresence initial={false} mode="popLayout">
-                {activeTheme && (
-                  <m.div
-                    initial={{ translateX: "-100%" }}
-                    animate={{ translateX: "0%" }}
-                    exit={{ translateX: "100%" }}
-                    transition={{ duration: 1, ease: "linear" }}
-                    key={activeTheme.image + "slide"}
-                    layout="position"
-                    className="relative h-60 w-full   "
-                  >
-                    <img
-                      className="h-60 w-full  object-cover "
-                      src={host + "/storage/" + activeTheme.image}
-                      alt=""
-                    />
-                  </m.div>
-                )}
-              </AnimatePresence>
+            <div className=" relative h-60 w-full  overflow-hidden   ">
+              {activeTheme &&
+                product?.data.themes.map((product: SingleProductType) => {
+                  return (
+                    <AnimatePresence mode="popLayout" initial={false}>
+                      {activeTheme.image == product.image && (
+                        <m.div
+                          initial={{ translateX: `${105}%` }}
+                          animate={{ translateX: "0%" }}
+                          exit={{ translateX: `${-105}%` }}
+                          transition={{ duration: 1, ease: "linear" }}
+                          layout="position"
+                          className="relative h-60 w-full   "
+                        >
+                          <img
+                            className="h-60 w-full  object-cover "
+                            src={host + "/storage/" + product.image}
+                            alt=""
+                          />
+                        </m.div>
+                      )}
+                    </AnimatePresence>
+                  );
+                })}
             </div>
             <div className=" flex flex-col gap-2 p-2">
               <div className="  flex items-center  justify-between ">

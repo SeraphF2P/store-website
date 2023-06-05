@@ -4,7 +4,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { Btn } from "../../../components";
 import { useProductsContext } from "../../../context/ProductsContext";
-import { useClickOutside, useScrollLock } from "../../../hook";
+import { useClickOutside, useScrollLock } from "../../../hooks";
 import { cartAnimation, cartitem } from "../../../lib/utile/animate";
 import InCartItem from "./InCartItem";
 
@@ -53,7 +53,7 @@ const CartList: FC<CartListProps> = ({ setOpenCart, cartIsOpen }) => {
       <div className=" remove-scroll-bar flex h-full w-full flex-col  gap-4   overflow-y-scroll p-4 ">
         <div className=" flex h-full w-full flex-col items-center gap-2   px-8">
           {inCart && (
-            <AnimatePresence mode="popLayout" presenceAffectsLayout>
+            <AnimatePresence mode="popLayout" >
               {inCart.map((product: CartItemType) => {
                 return (
                   <m.div

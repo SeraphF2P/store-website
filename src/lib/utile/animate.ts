@@ -68,6 +68,16 @@ export const cartitem = {
     },
   },
 };
+export const slideOut = {
+  hidden: {
+    x: "100%",
+    opacity: 0,
+  },
+  show: {
+    x: "0px",
+    opacity: 1,
+  },
+};
 export const burgerMenuAnimation = {
   close: { clipPath: "circle(0% at 40px 40px)", pointerEvents: "none" },
   open: { clipPath: "circle(300% at 40px 40px)", pointerEvents: "auto" },

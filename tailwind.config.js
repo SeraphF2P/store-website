@@ -12,7 +12,11 @@ module.exports = {
         xsm: "420px",
         xs: "576px",
       },
-
+      "aaaa": {
+        "scroll-behavior": "smooth",
+        "-ms-overflow-style": "none",
+        "scrollbar-width": "none",
+      },
       gridAutoColumns: {
         fluid: "repeat(auto-fit,minmax(0,1fr))",
       },
@@ -58,7 +62,7 @@ module.exports = {
           },
         },
       },
-
+      
     },
   },
   plugins: [

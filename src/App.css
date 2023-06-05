@@ -5,6 +5,9 @@
 .form-input {
   @apply w-full rounded  placeholder-gray-700 shadow placeholder:text-gray-500 focus:ring-2 valid:focus:ring-teal-400 invalid:focus:ring-red-400;
 }
+.form-error {
+  @apply pointer-events-none absolute bottom-2 right-1 text-sm text-red-400;
+}
 .card-face {
   backface-visibility: hidden;
   transform-style: preserve-3d;
@@ -35,7 +38,4 @@ body {
 }
 body::-webkit-scrollbar {
   display: none;
-}
-.form-error {
-  @apply pointer-events-none absolute bottom-2 right-1 text-sm text-red-400;
 }

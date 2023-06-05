@@ -19,10 +19,6 @@ const ProductThemesGallery: FC<ProductThemesGalleryProps> = ({
         themes.map((theme: { id: string; image: string }) => {
           return theme.id != activeTheme.id ? (
             <m.div
-              transition={{
-                layout: { type: "tween", duration: 0.7 },
-              }}
-              layoutId={theme.image + "gallery"}
               key={theme.image + "gallery"}
               onClick={() => setactiveTheme(theme.id)}
               className={` relative h-24 w-20 overflow-hidden  rounded-sm object-cover sm:w-40 `}
@@ -35,11 +31,7 @@ const ProductThemesGallery: FC<ProductThemesGalleryProps> = ({
             </m.div>
           ) : (
             <m.div
-              layoutId={theme.image + "gallery"}
               key={theme.image + "gallery"}
-              transition={{
-                layout: { type: "tween", duration: 0.7 },
-              }}
               className={` relative order-1 h-24 w-20 overflow-hidden  rounded-sm object-cover sm:w-40  `}
             >
               <img

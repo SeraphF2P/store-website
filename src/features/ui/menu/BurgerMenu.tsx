@@ -1,7 +1,7 @@
 import { FC, useRef } from "react";
 import { burgerMenuAnimation } from "../../../lib/utile/animate";
 import { Link } from "react-router-dom";
-import { useClickOutside, useScrollLock } from "../../../hook";
+import { useClickOutside, useScrollLock } from "../../../hooks";
 import { motion as m } from "framer-motion";
 import {
   Avatar,

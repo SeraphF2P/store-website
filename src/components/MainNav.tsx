@@ -5,8 +5,8 @@ import { useProductsContext } from "../context/ProductsContext";
 import CartList from "../features/ui/cart/CartList";
 import BurgerMenu from "../features/ui/menu/BurgerMenu";
 import BurgerMenuBtn from "../features/ui/menu/BurgerMenuBtn";
-import { useOpenCartOrMenu } from "../hook/useOpenCartOrMenu";
-import useScrollSensore from "../hook/useScrollSensore";
+import { useOpenCartOrMenu } from "../hooks/useOpenCartOrMenu";
+import useScrollSensore from "../hooks/useScrollSensore";
 import Btn from "./Btn";
 import SearchSec from "./SearchSec";
 
@@ -26,7 +26,7 @@ const MainNav: FC = () => {
     >
       <nav className=" flex h-full  w-full flex-row-reverse items-center justify-between gap-2 px-4">
         <div>
-          <AnimatePresence>
+          <AnimatePresence >
             {cartIsOpen && (
               <CartList cartIsOpen={cartIsOpen} setOpenCart={setOpenCart} />
             )}
