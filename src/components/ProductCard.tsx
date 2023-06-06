@@ -11,9 +11,11 @@ import { host } from "../host";
 import { formatCurrency } from "../lib/utile/formatters";
 import { randomNumBetween } from "../lib/utile/other";
 import ProductRating from "./ProductRating";
+import { useAnimationContext } from "../context/AnimationContext";
 const ProductCard: FC<ProductType> = (product) => {
   const nav = useNavigate();
-  const { toggleCartItem, inCart, openProductInfoModal } = useProductsContext();
+  const { toggleCartItem, inCart } = useProductsContext();
+  const { openProductInfoModal } = useAnimationContext();
   const { current: activeTheme } = useRef(
     product.themes.length == 1
       ? product.themes[0]
@@ -46,7 +48,6 @@ const ProductCard: FC<ProductType> = (product) => {
                 onClick={() => {
                   openProductInfoModal(product);
                 }}
-                
                 whenToggled=""
                 variant="ghost"
                 className=" h-8 w-full"

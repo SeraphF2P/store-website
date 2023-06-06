@@ -1,14 +1,14 @@
 import { Portal } from "@radix-ui/react-portal";
 import { motion as m } from "framer-motion";
 
-import { FC } from "react";
+import { useAnimationContext } from "../context/AnimationContext";
 import { useScrollLock } from "../hooks";
 import ProductCard from "./ProductCard";
 
-const ProductInfoSec: FC<ProductType> = (product) => {
+const ProductInfoSec = () => {
+  const { productInfo: product } = useAnimationContext();
   useScrollLock(product != null);
-
-  return (
+  return product ? (
     <Portal asChild>
       <m.section
         initial={{ opacity: 0 }}
@@ -56,7 +56,10 @@ const ProductInfoSec: FC<ProductType> = (product) => {
             <m.div
               className={` h-[356px] `}
               initial={{ x: "0%" }}
-              animate={{ x: "50%", transition: { duration: 0.5, delay: 0.6 } }}
+              animate={{
+                x: "50%",
+                transition: { duration: 0.5, delay: 0.6 },
+              }}
               exit={{ x: "0%", transition: { duration: 0.5, delay: 0.6 } }}
             >
               <ProductCard {...product} />
@@ -65,7 +68,7 @@ const ProductInfoSec: FC<ProductType> = (product) => {
         </m.section>
       </m.section>
     </Portal>
-  );
+  ) : null;
 };
 
 export default ProductInfoSec;

@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { Outlet, useOutletContext } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useStorage";
@@ -17,14 +17,12 @@ type ProductsContextType = {
   addQty: (_id: string | number, _theme_id: string | number) => void;
   removeQty: (_id: string | number, _theme_id: string | number) => void;
   clearCart: () => void;
-  openProductInfoModal: (_val: ProductType | undefined) => void;
   setCategory: (_val: string) => void;
   activeCategory: string | undefined;
   isLoading: boolean;
   products: ProductType[];
   totalPrice: string;
   inCart: CartItemType[];
-  productInfo: ProductType | undefined;
 };
 const defaultValues: ProductsContextType = {
   toggleCartItem: (_product: SingleProductType) => {},
@@ -54,7 +52,7 @@ const ProductsContext: FC = () => {
   const { data: products, isLoading } = useQuery({
     queryKey: ["products", category],
     queryFn: () => {
-      return axiosClient(`/products?category=${category}`);
+      return axiosClient(`/products?category=${category}&limit=5`);
     },
     staleTime: 1000 * 60,
     keepPreviousData: true,
@@ -105,22 +103,15 @@ const ProductsContext: FC = () => {
       setInCart([...inCart]);
     }
   };
-  const totalPrice = formatCurrency(
-    inCart.reduce((prev: number, curr: { price: number; qty: number }) => {
-      return prev + curr.price * curr.qty;
-    }, 0)
-  );
+  const totalPrice = useMemo(() => {
+    return formatCurrency(
+      inCart.reduce((prev: number, curr: { price: number; qty: number }) => {
+        return prev + curr.price * curr.qty;
+      }, 0)
+    );
+  }, [inCart]);
   const clearCart = () => {
     setInCart([]);
-  };
-  const [productInfo, setProductInfo] = useState<ProductType | undefined>();
-
-  const openProductInfoModal = (val: ProductType | undefined) => {
-    if (productInfo) {
-      setProductInfo(undefined);
-    } else {
-      setProductInfo(val);
-    }
   };
   return (
     <Outlet
@@ -136,8 +127,6 @@ const ProductsContext: FC = () => {
         isLoading,
         setCategory,
         activeCategory: category,
-        productInfo,
-        openProductInfoModal,
       }}
     />
   );

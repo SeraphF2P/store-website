@@ -1,10 +1,10 @@
 import { AnimatePresence, motion as m } from "framer-motion";
-import { ProductCard, Categorys } from "../components/index.ts";
-import { useProductsContext } from "../context/ProductsContext.tsx";
-import { useScrollSensore } from "../hooks";
+import CardGallery from "../components/CardGallery.tsx";
 import ProductInfoSec from "../components/ProductInfoSec.tsx";
+import { Categorys } from "../components/index.ts";
+import { useScrollSensore } from "../hooks";
+import AnimationContext from "../context/AnimationContext.tsx";
 const HomePage = () => {
-  const { products, productInfo } = useProductsContext();
   const categorysBar = useScrollSensore({
     forward: ["-translate-y-[calc(100%+80px)]"],
     inReverse: ["translate-y-0"],
@@ -28,38 +28,17 @@ const HomePage = () => {
           <Categorys />
         </m.div>
       </section>
-      <m.section
-        layout
-        className=" remove-scroll-bar  relative flex min-h-screen flex-wrap items-center justify-center  gap-4 overflow-y-scroll px-8 py-4"
-      >
-        <AnimatePresence mode="popLayout">
-          {products &&
-            products.map((product: ProductType) => {
-              return (
-                productInfo?.id != product?.id && (
-                  <m.div
-                    layout="position"
-                    key={product.created_at + product.id + "homepage"}
-                    layoutId={product.created_at + product.id}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    whileHover={{
-                      y: -8,
-                      transition: { ease: "linear", duration: 0.3 },
-                    }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <ProductCard {...product} />
-                  </m.div>
-                )
-              );
-            })}
+      <AnimationContext>
+        <m.section
+          layout
+          className=" remove-scroll-bar  relative flex min-h-screen flex-wrap items-center justify-center  gap-4 overflow-y-scroll px-8 py-4"
+        >
+          <CardGallery />
+        </m.section>
+        <AnimatePresence mode="wait">
+          <ProductInfoSec />
         </AnimatePresence>
-      </m.section>
-      <AnimatePresence mode="wait">
-        {productInfo && <ProductInfoSec {...productInfo} />}
-      </AnimatePresence>
+      </AnimationContext>
     </main>
   );
 };
